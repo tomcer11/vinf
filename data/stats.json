@@ -1,0 +1,188 @@
+{
+  "created": "2026-10-24 21:57:52",
+  "crawl": {
+    "tso": {
+      "manifest_pages": 6643,
+      "kinds": {
+        "genus": 930,
+        "species": 5713,
+        "listing a-z": 26
+      },
+      "saved_pages": {
+        "files": 6669,
+        "bytes": 247050520,
+        "on_disk_bytes": 260403200
+      },
+      "cache": {
+        "files": 6669,
+        "bytes": 247050520,
+        "on_disk_bytes": 260403200
+      },
+      "requests_logged": 13321,
+      "http_200": 10941,
+      "served_from_cache": 2379,
+      "other_statuses": {
+        "404": 1
+      }
+    },
+    "gardenia": {
+      "manifest_pages": 10382,
+      "kinds": {
+        "index": 1,
+        "genus": 489,
+        "plant": 9892
+      },
+      "saved_pages": {
+        "files": 10382,
+        "bytes": 3413517667,
+        "on_disk_bytes": 3434872832
+      },
+      "cache": {
+        "files": 10394,
+        "bytes": 3416331446,
+        "on_disk_bytes": 3437735936
+      },
+      "requests_logged": 38550,
+      "http_200": 10431,
+      "served_from_cache": 28118,
+      "other_statuses": {
+        "error": 1
+      }
+    }
+  },
+  "tokens": {
+    "tso": {
+      "records": 6643,
+      "text": {
+        "chars": 22736465,
+        "cl100k_base": 5935061,
+        "o200k_base": 5804204
+      },
+      "html": {
+        "files": 6669,
+        "chars": 246740636,
+        "cl100k_base": 85091136,
+        "o200k_base": 80174377
+      }
+    },
+    "gardenia": {
+      "records": 9892,
+      "text": {
+        "chars": 33513318,
+        "cl100k_base": 7947688,
+        "o200k_base": 7752796
+      },
+      "html": {
+        "files": 10382,
+        "chars": 3370295369,
+        "cl100k_base": 1091622269,
+        "o200k_base": 1085789296
+      }
+    }
+  },
+  "extractor": {
+    "tso": {
+      "records": 6643,
+      "jsonl_bytes": 33135612,
+      "filled": {
+        "family": 6635,
+        "common_names": 2027,
+        "synonym_names": 2606,
+        "description": 3575,
+        "editorial_note": 880,
+        "distribution": 1931,
+        "habitat": 1808,
+        "habitat_from_text": 3820,
+        "usda": 1386,
+        "rhs": 1858,
+        "conservation": 1751,
+        "height": 4147,
+        "altitude": 1731,
+        "mountain": 2145,
+        "pests": 402,
+        "pest_sentences": 633,
+        "main_text": 6162,
+        "sections": 1800
+      }
+    },
+    "gardenia": {
+      "records": 9892,
+      "jsonl_bytes": 68265417,
+      "filled": {
+        "common_names": 9810,
+        "scientific_synonyms": 2733,
+        "plant_type": 9892,
+        "usda": 9889,
+        "height": 9887,
+        "exposure": 9892,
+        "soil_type": 9836,
+        "tolerances": 9565,
+        "attracts": 6813,
+        "garden_uses": 9417,
+        "native_to": 4599,
+        "habitat_sentences": 6139,
+        "pests": 5922,
+        "pest_sentences": 8305,
+        "description": 9892
+      }
+    }
+  },
+  "mapping": {
+    "gardenia_plants": 9892,
+    "levels": {
+      "none": 6662,
+      "genus": 1032,
+      "species": 1685,
+      "synonym": 173,
+      "cultivar": 340
+    },
+    "mapped": 3230,
+    "tso_pages_with_gardenia": 1119,
+    "woody_not_in_tso": 392
+  },
+  "index": {
+    "documents": 6643,
+    "tokens": 3870610,
+    "built": "2026-10-24 21:56:53",
+    "field_weights": {
+      "title": 5.0,
+      "name": 3.0,
+      "synonyms": 3.0,
+      "cultivars": 1.0,
+      "taxonomy": 2.0,
+      "distribution": 1.5,
+      "habitat": 1.5,
+      "pests": 2.0,
+      "morphology": 1.0,
+      "garden": 1.0,
+      "text": 0.5
+    },
+    "vocabulary": {
+      "title": 4691,
+      "name": 6974,
+      "synonyms": 7605,
+      "cultivars": 10326,
+      "taxonomy": 1111,
+      "distribution": 1868,
+      "habitat": 12511,
+      "pests": 8128,
+      "morphology": 9765,
+      "garden": 16752,
+      "text": 53428
+    },
+    "postings": {
+      "title": 12635,
+      "name": 17605,
+      "synonyms": 17137,
+      "cultivars": 23233,
+      "taxonomy": 14911,
+      "distribution": 22301,
+      "habitat": 113365,
+      "pests": 64567,
+      "morphology": 279201,
+      "garden": 370275,
+      "text": 1100415
+    },
+    "file_bytes": 6311501
+  }
+}

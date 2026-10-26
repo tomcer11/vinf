@@ -21,8 +21,8 @@ Identification:
 Delay: 5 s + up to 1 s jitter between requests (see crawler_config.py)
 
 Usage:
-  python crawl_articles.py --dry-run   # count links, no page downloads
-  python crawl_articles.py             # full crawl (safe to stop and restart)
+  python -m crawler.crawl_articles --dry-run   # count links, no page downloads
+  python -m crawler.crawl_articles             # full crawl (safe to stop and restart)
 """
 
 import hashlib
@@ -35,16 +35,16 @@ from collections import deque
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
-from crawler_config import PoliteSession, logger, BASE_DELAY_SECONDS, JITTER_SECONDS
+from crawler.crawler_config import PoliteSession, logger, BASE_DELAY_SECONDS, JITTER_SECONDS
 
 DOMAIN = "www.treesandshrubsonline.org"
 BASE = f"https://{DOMAIN}"
 ARTICLES_BASE = f"{BASE}/articles"
 
-PAGES_DIR = Path("./pages")
-PAGES_DIR.mkdir(exist_ok=True)
+PAGES_DIR = Path("./crawled_pages/tso/pages")
+PAGES_DIR.mkdir(parents=True, exist_ok=True)
 
-MANIFEST_PATH = Path("./manifest.json")
+MANIFEST_PATH = Path("./crawled_pages/tso/manifest.json")
 MANIFEST_FLUSH_EVERY = 500
 
 # Deepest allowed URL: /articles/<genus>/<species>/  -> 3 path segments.

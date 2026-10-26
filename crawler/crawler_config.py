@@ -39,8 +39,8 @@ BASE_DELAY_SECONDS = 5.0      # minimum delay between requests
 JITTER_SECONDS = 1.0          # random extra delay of 0 .. JITTER_SECONDS
 TIMEOUT = (5, 20)             # (connect, read) seconds
 
-CACHE_DIR = Path("./cache")   # defaults used by crawl_articles.py
-LOG_FILE = Path("./crawl_log.csv")
+CACHE_DIR = Path("./crawled_pages/tso/cache")   # defaults used by crawl_articles.py
+LOG_FILE = Path("./crawled_pages/tso/crawl_log.csv")
 
 BACKOFF_SECONDS = 60          # wait after HTTP 429 without Retry-After
 MAX_BACKOFF_SECONDS = 600

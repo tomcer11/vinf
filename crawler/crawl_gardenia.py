@@ -17,10 +17,10 @@ Every URL enters the queue at most once and every page is cached on disk, so
 nothing is downloaded twice, and a stopped crawl can be restarted.
 
 Output (separate from the trees and shrubs data):
-  gardenia/pages/          downloaded HTML, readable file names
-  gardenia/cache/          cache keyed by URL hash
-  gardenia/manifest.json   url, kind, file, size
-  gardenia/crawl_log.csv   every request
+  crawled_pages/gardenia/pages/          downloaded HTML, readable file names
+  crawled_pages/gardenia/cache/          cache keyed by URL hash
+  crawled_pages/gardenia/manifest.json   url, kind, file, size
+  crawled_pages/gardenia/crawl_log.csv   every request
 
 Sitemap mode (complete list of plants, recommended):
   The genus pages only show part of the plants (the rest is loaded by JavaScript
@@ -31,13 +31,13 @@ Sitemap mode (complete list of plants, recommended):
   only the missing ones are. The manifest of the earlier crawl is kept and extended.
 
 Usage:
-  python crawl_gardenia.py --probe                          # 1 request: robots.txt + genus page check
-  python crawl_gardenia.py --from-sitemap --dry-run         # read sitemaps, count missing plants (12 requests)
-  python crawl_gardenia.py --from-sitemap --max-plants 50   # download only 50 missing plants (trial)
-  python crawl_gardenia.py --from-sitemap                   # download all missing plants (safe to stop and restart)
-  python crawl_gardenia.py --from-sitemap --refresh-sitemap # ignore the cached sitemap files, read them again
-  python crawl_gardenia.py --dry-run                        # old mode: index + genus pages, count plant URLs
-  python crawl_gardenia.py                                  # old mode: full genus-page crawl
+  python -m crawler.crawl_gardenia --probe                          # 1 request: robots.txt + genus page check
+  python -m crawler.crawl_gardenia --from-sitemap --dry-run         # read sitemaps, count missing plants (12 requests)
+  python -m crawler.crawl_gardenia --from-sitemap --max-plants 50   # download only 50 missing plants (trial)
+  python -m crawler.crawl_gardenia --from-sitemap                   # download all missing plants (safe to stop and restart)
+  python -m crawler.crawl_gardenia --from-sitemap --refresh-sitemap # ignore the cached sitemap files, read them again
+  python -m crawler.crawl_gardenia --dry-run                        # old mode: index + genus pages, count plant URLs
+  python -m crawler.crawl_gardenia                                  # old mode: full genus-page crawl
 """
 
 import argparse
@@ -49,14 +49,14 @@ from collections import deque
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
-from crawler_config import PoliteSession, logger, USER_AGENT
+from crawler.crawler_config import PoliteSession, logger, USER_AGENT
 
 DOMAIN = "www.gardenia.net"
 SEED_URL = f"https://{DOMAIN}/plants/genera"
 GENUS_EXAMPLE = f"https://{DOMAIN}/plants/genera/abelia"
 PLANT_EXAMPLE = f"https://{DOMAIN}/plant/abelia-edward-goucher"
 
-OUT_DIR = Path("./gardenia")
+OUT_DIR = Path("./crawled_pages/gardenia")
 PAGES_DIR = OUT_DIR / "pages"
 CACHE_DIR = OUT_DIR / "cache"
 LOG_FILE = OUT_DIR / "crawl_log.csv"

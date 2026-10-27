@@ -4,10 +4,11 @@ over the index of indexer.py.
 
   1. the query goes through the same tokenize() as the trees
      ("weeping beeches" -> weep beech, "hardiness:5" stays one term)
-  2. weights as in the index, with idf classic or probabilistic:
+  2. weights as in the index, with idf classic or smooth:
        w(t, q) = (1 + log10 tf_q) * idf(t)      tf_q = count of the term in the query
        w(t, d) = (1 + log10 tf_d) * idf(t)
-     terms that are not in the index or have idf 0 are left out
+     terms that are not in the index or have idf 0 (classic, a term in all
+     documents) are left out
   3. cos(q, d) = sum_t w(t, q) * w(t, d) / (|q| * |d|), |d| from output/index/docs.tsv;
      only the postings of the query terms are read, term by term
   4. the trees with the highest cosine, 10 by default
@@ -15,7 +16,7 @@ over the index of indexer.py.
 Usage:
   python search.py deciduous tree for clay soil
   python search.py "weeping beech" --top 5
-  python search.py "weeping beech" --idf probabilistic
+  python search.py "weeping beech" --idf smooth
 """
 
 import argparse

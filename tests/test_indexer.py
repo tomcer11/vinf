@@ -46,9 +46,10 @@ class BuildIndex(unittest.TestCase):
         self.assertEqual(idf("classic", 10, 1), 1.0)
         self.assertEqual(self.terms["fagu"].df, 2)
         self.assertAlmostEqual(self.terms["fagu"].idf["classic"], math.log10(3 / 2))
-        self.assertEqual(self.terms["fagu"].idf["probabilistic"], 0.0)      # df >= N/2
-        self.assertAlmostEqual(self.terms["robur"].idf["probabilistic"], math.log10(2.5 / 1.5))
-        self.assertEqual(self.terms["fagacea"].idf, {"classic": 0.0, "probabilistic": 0.0})
+        self.assertAlmostEqual(self.terms["fagu"].idf["smooth"], math.log10(1 + 3 / 2))
+        self.assertAlmostEqual(self.terms["robur"].idf["smooth"], math.log10(4))
+        self.assertEqual(self.terms["fagacea"].idf["classic"], 0.0)               # in all documents
+        self.assertAlmostEqual(self.terms["fagacea"].idf["smooth"], math.log10(2))
 
     def test_norm(self):
         # Fagus sylvatica: sylvatica, european, hardiness:4 in one document,

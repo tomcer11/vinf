@@ -43,10 +43,11 @@ class Search(unittest.TestCase):
             with self.subTest(query=query):
                 self.assertEqual(search(query, self.docs, self.terms), ([], 0))
 
-    def test_zero_probabilistic_idf_is_ignored(self):
-        self.assertEqual(set(query_weights(["fagu", "robur"], self.terms, "probabilistic")), {"robur"})
-        self.assertEqual(search("Fagus", self.docs, self.terms, method="probabilistic"), ([], 0))
-        self.assertEqual(len(search("Fagus", self.docs, self.terms, method="classic")[0]), 2)
+    def test_smooth_idf_keeps_a_term_of_all_documents(self):
+        self.assertEqual(set(query_weights(["fagacea", "robur"], self.terms, "classic")), {"robur"})
+        self.assertEqual(set(query_weights(["fagacea", "robur"], self.terms, "smooth")), {"fagacea", "robur"})
+        self.assertEqual(search("Fagaceae", self.docs, self.terms, method="classic"), ([], 0))
+        self.assertEqual(len(search("Fagaceae", self.docs, self.terms, method="smooth")[0]), 3)
 
     def test_load_only_the_query_terms(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -9,15 +9,14 @@ gardenia_origin is left out, it is a copy of one of gardenia_highlights.
 
 Weights, N = number of documents, df = number of documents with the term:
   tf weight      1 + log10(tf)
-  classic        idf = log10(N / df)
-  probabilistic  idf = max(0, log10((N - df + 0.5) / (df + 0.5)))
-                 (Robertson / Sparck Jones, 0 for a term in half of the documents or more)
+  classic        idf = log10(N / df)            (0 for a term in all documents)
+  smooth         idf = log10(1 + N / df)        (never 0, at least log10(2) for df = N)
   w(t, d) = (1 + log10 tf) * idf(t). The length |d| = sqrt(sum of w(t, d)^2)
   is stored for both idf methods, so that the search can compute the cosine.
 
 Files (tab separated, with a header):
-  output/index/docs.tsv    doc_id  key  name  length  norm_classic  norm_probabilistic
-  output/index/terms.tsv   term  df  idf_classic  idf_probabilistic  postings
+  output/index/docs.tsv    doc_id  key  name  length  norm_classic  norm_smooth
+  output/index/terms.tsv   term  df  idf_classic  idf_smooth  postings
                            terms sorted, postings 'doc_id:tf,doc_id:tf' sorted by doc_id
 
 Usage:
@@ -41,7 +40,7 @@ INDEX_DIR = Path("./output/index")
 DOCS_FILE = "docs.tsv"
 TERMS_FILE = "terms.tsv"
 
-IDF_METHODS = ("classic", "probabilistic")
+IDF_METHODS = ("classic", "smooth")
 INDEX_FIELDS = [name for name in TEXT_FIELDS + VALUE_FIELDS if name != "gardenia_origin"]
 
 
@@ -64,8 +63,8 @@ class Term:
 def idf(method: str, n_docs: int, df: int) -> float:
     if method == "classic":
         return math.log10(n_docs / df)
-    if method == "probabilistic":
-        return max(0.0, math.log10((n_docs - df + 0.5) / (df + 0.5)))
+    if method == "smooth":
+        return math.log10(1 + n_docs / df)
     raise ValueError(f"unknown idf method: {method}")
 
 
@@ -153,8 +152,6 @@ def print_summary(docs: list[Doc], terms: dict[str, Term], seconds: float):
         ("tokens", tokens),
         ("average tokens per document", round(tokens / n_docs)),
         ("terms in one document only", sum(1 for entry in terms.values() if entry.df == 1)),
-        ("terms with probabilistic idf 0 (df >= N/2)",
-         sum(1 for entry in terms.values() if entry.idf["probabilistic"] == 0)),
     ]
     print()
     for label, value in rows:
@@ -163,9 +160,9 @@ def print_summary(docs: list[Doc], terms: dict[str, Term], seconds: float):
         size = (INDEX_DIR / name).stat().st_size / 1e6
         print(f"  {'size of ' + str(INDEX_DIR / name):45} {size:7.1f} MB")
 
-    print(f"\n  {'terms with the highest df':25} {'df':>6} {'idf classic':>12} {'probabilistic':>14}")
+    print(f"\n  {'terms with the highest df':25} {'df':>6} {'idf classic':>12} {'smooth':>8}")
     for term, entry in sorted(terms.items(), key=lambda item: -item[1].df)[:10]:
-        print(f"  {term:25} {entry.df:6} {entry.idf['classic']:12.4f} {entry.idf['probabilistic']:14.4f}")
+        print(f"  {term:25} {entry.df:6} {entry.idf['classic']:12.4f} {entry.idf['smooth']:8.4f}")
     print(f"\nDone in {seconds:.0f} s")
 
 
@@ -178,7 +175,7 @@ def show_term(text: str):
             print(f"{term}: not in the index")
             continue
         print(f"{term}: df {entry.df}, idf classic {entry.idf['classic']:.4f}, "
-              f"probabilistic {entry.idf['probabilistic']:.4f}")
+              f"smooth {entry.idf['smooth']:.4f}")
         for doc_id, tf in sorted(entry.postings, key=lambda posting: -posting[1])[:10]:
             weights = "  ".join(f"w_{m} {tf_weight(tf) * entry.idf[m]:.3f}" for m in IDF_METHODS)
             print(f"  tf {tf:3}  {weights}  {docs[doc_id].name}")

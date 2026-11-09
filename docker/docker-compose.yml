@@ -1,0 +1,11 @@
+services:
+    spark:
+      image: quay.io/jupyter/pyspark-notebook:spark-3.5.3
+      working_dir: /work
+      volumes:
+        - ..:/work                 # repo (path is relative to this file)
+        - C:/vinf-data:/data       # wiki dump, outside OneDrive
+      environment:
+        PYTHONPATH: /work          # Spark's Python workers can import extractor, wiki, spark_jobs
+      ports:
+        - "4040:4040"              # Spark UI
